@@ -1,0 +1,33 @@
+
+* Como iniciar um projeto php utilizando laravel
+    Para criar um projeto utilzando laravel com php, utilizamos o composer para instalar automaticamente todas as dependências necessárias.
+
+    Utilize o comando 
+    composer create-project --prefer-dist laravel/laravel nome_do_projeto "5.7.*"
+
+* Comando para iniciar o servidor
+    php artisan serve
+
+* No arquivo routes/api podemos definir as nossas rotas da api
+
+* Criar uma migração 
+    php artisan make:migration create_table_products --create=products
+
+* Alterar as configurações do banco no arquivo .env
+    DB_DATABASE=nomedobancodedados
+    DB_USERNAME=nomedeusuario
+    DB_PASSWORD=senha
+
+* Crie o seu banco de dados com o nome informado acima
+
+* No arquivo database/migration/migracaocriada insira as colunas que deseja inserir na sua tabela (no método up)
+    Exemplo:
+        $table->increments('id');
+        $table->string('name');
+        $table->float('price');
+        $table->string('description');
+        $table->string('slug');
+        $table->timestamps();
+
+* Execute o comando para fazer a migracao
+    php artisan migrate

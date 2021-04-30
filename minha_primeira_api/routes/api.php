@@ -16,3 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/test', function(Request $request){
+    // dd($request->headers->all());
+    // dd($request->headers->get('Authorization'));
+
+    $response = new \Illuminate\Http\Response(json_encode(['msg'=>'Minha primeira respost de API']));
+    $response->header('Content-Type', 'application/json');
+
+    return $response;
+});
