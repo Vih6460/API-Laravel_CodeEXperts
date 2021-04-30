@@ -1,0 +1,4 @@
+Para criar um projeto utilzando laravel com php, utilizamos o composer para instalar automaticamente todas as dependências necessárias.
+
+Utilize o comando 
+composer create-project --prefer-dist laravel/laravel nome_do_projeto "5.7.*"
