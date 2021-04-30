@@ -29,5 +29,5 @@
         $table->string('slug');
         $table->timestamps();
 
-* Execute o comando para fazer a migracao
+* Execute o comando para fazer a migracao e adicionar a tabela ao banco
     php artisan migrate
