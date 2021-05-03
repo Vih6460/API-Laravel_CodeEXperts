@@ -97,3 +97,28 @@
 * Para criar um método de listar apenas um produto por id bastar criar o método no arquivo ProductController, e depois criar a rota no arquivo api
 
 * Para criar um método de atualizar apenas um produto por id bastar criar o método no arquivo ProductController, e depois criar a rota no arquivo api
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+Autenticação Básica
+
+-Gerando um usuário fake
+    php artisan make:seeder UsersTableSeeder
+
+- No arquivo criado coloque o seguinte código
+    public function run()
+    {
+        factory(\App\User::class, 1)->create(); //O número 1 é a qtd de usuários fakes que serão criados
+    }
+
+- No arquivo databaseseeder.php descomente o seguinte código
+    $this->call(UsersTableSeeder::class);
+
+
+- rode o comando a seguir para criar os usuarios fakes
+    php artisan db:seed
+
+- adicione no rota na api o código 
+    ->middleware('auth.basic')
