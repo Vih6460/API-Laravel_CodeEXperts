@@ -31,3 +31,69 @@
 
 * Execute o comando para fazer a migracao e adicionar a tabela ao banco
     php artisan migrate
+
+* Criar uma rota no arquivo api.php
+    Exemplo:
+        Route::get('/products', function(){
+            return Product::all();
+        });
+* Nesse momento irá dar um erro pois precisa criar um model, para corrigir será necessário executar o seguinte comando (isso irá cirar um arquivo dentro da pasta app chamado Product.php)
+    php artisan make:model Product
+
+* Editar o arquivo api.php na rota do produto acrescentar \App\ no return, ficará assim:
+    return \App\Product::all();
+
+* Crie um controller com o seguinte comando (o comando irá criar um arquivo ProductController dentro da pasta app/Http/Controllers/Api)
+    php artisan make:controller Api/ProductController
+
+* No arquivo app/Http/Controllers/Api/ProductControler.php
+                <?php
+
+                namespace App\Http\Controllers\Api;
+
+                use App\Product;
+                use Illuminate\Http\Request;
+                use App\Http\Controllers\Controller;
+
+                class ProductController extends Controller
+                {
+                    private $product;
+
+                    public function __construct(Product $product)
+                    {
+                        $this->product = $product;
+                    }
+
+                    public function index(){
+                        $products = $this->product->all();
+
+                        return response()->json($products);
+                    }
+                }
+
+
+* Altere a rota de Products no arquivo routes/api
+                /// Products Route
+                Route::namespace('Api')->prefix('products')->group(function(){
+                    Route::get('/', 'ProductController@index');
+                    Route::post('/', 'ProductController@save');
+                });
+
+* No código acima criamos uma nova rota post com o método save, porém devemos criar esse método pois ele não existe, no arquivo app/Http\Controllers/Api/ProductController.php
+    public function save(Request $request)
+    {
+        $data = $request->all();
+        $product = $this->product->create($data);
+
+        return response()->json($product);
+    }
+
+* Agora devemos inserir os campos que são permitidos a inserção de dados, para isso no arquivo App/Product.php insira o código a seguir
+                protected $fillable = [
+                    'name', 'price', 'description', 'slug'
+                ]
+
+
+* Para criar um método de listar apenas um produto por id bastar criar o método no arquivo ProductController, e depois criar a rota no arquivo api
+
+* Para criar um método de atualizar apenas um produto por id bastar criar o método no arquivo ProductController, e depois criar a rota no arquivo api
