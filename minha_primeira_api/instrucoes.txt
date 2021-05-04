@@ -154,3 +154,49 @@ Autenticação Básica
 
 
 - rode o comando php artisan db:seed para gerar os produtos
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+* * * * *  Validações  * * * * *
+
+- Rode o comando abaixo para criar uma request dentro da pasta app/Http/Requests
+    php artisan make:request ProductRequest
+
+- no arquivo criado ProductRequest
+        <?php
+
+        namespace App\Http\Requests;
+
+        use Illuminate\Foundation\Http\FormRequest;
+
+        class ProductRequest extends FormRequest
+        {
+            /**
+            * Determine if the user is authorized to make this request.
+            *
+            * @return bool
+            */
+            public function authorize()
+            {
+                return true;
+            }
+
+            /**
+            * Get the validation rules that apply to the request.
+            *
+            * @return array
+            */
+            public function rules()
+            {
+                return [
+                    'name'          => 'required',
+                    'price'         => 'required',
+                    'description'   => 'required',
+                    'slug'          => 'required'
+                ];
+            }
+        }
+
+- No arquivo ProductController onde definimos os nossos métodos das nossas rotas, no método desejado, onde ele recebia como parametro um request vamos alterar para ProductRequest como no exemplo abaixo
+    Como era:    public function save(Request $request)
+    Como ficou:  public function save(ProductRequest $request)
