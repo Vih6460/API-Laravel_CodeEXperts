@@ -15,12 +15,34 @@ class ProductController extends Controller
         $this->product = $product;
     }
 
-    public function index()
-    {
-        // $products = $this->product->paginate(1);
-        $products = $this->product->all();
+    // public function index()
+    // {
+    //     //$products = $this->product->paginate(10);
+    //     $products = $this->product->all();
 
-        return response()->json($products);
+    //     return response()->json($products);
+    // }
+
+    public function index(Request $request)
+    {
+        $products = $this->product;
+
+        if($request->has('fields')){
+            $fields = $request->get('fields');
+            $products = $products->selectRaw($fields);
+        }
+
+        if($request->has('conditions')){
+            $expressions = explode(';', $request->get('conditions'));
+
+            foreach($expressions as $e){
+                $exp = explode(':', $e);
+                $products = $products->where($exp[0], $exp[1], $exp[2]);
+            }
+
+        }
+
+        return response()->json($products->paginate(10));
     }
 
     public function show($id)

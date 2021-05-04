@@ -122,3 +122,35 @@ Autenticação Básica
 
 - adicione no rota na api o código 
     ->middleware('auth.basic')
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+***** Criar um produto através de factory e seeder *****
+
+-Rode os comandos no terminal
+    php artisan make:factory ProductFactory
+    php artisan make:seeder ProductTableSeeder
+
+- no arquivo criado ProductFactory
+        $factory->define(\App\Product::class, function (Faker $faker) {
+            return [
+                'name' => $faker->name,
+                'price' => $faker->randomFloat(2, 0, 8), //o primeiro númmero e o número de casas decimais e depois o tamanho mínimo e máximo do campo
+                'description' => $faker->text,
+                'slug' => $faker->slug
+            ];
+        });
+
+- no arquivo criado ProductTableSeeder
+        public function run()
+        {
+            factory(\App\Product::class, 30) -> create();
+        }
+
+- no arquivo databaseseeder adicione no método run
+        $this->call(ProductTableSeeder::class);
+
+
+- rode o comando php artisan db:seed para gerar os produtos
